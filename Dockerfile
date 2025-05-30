@@ -26,7 +26,8 @@ COPY --from=prerelease /usr/src/app/dist ./dist
 COPY --from=prerelease /usr/src/app/server.ts .
 COPY --from=prerelease /usr/src/app/node_modules ./node_modules
 
-# run the full-stack server
+# set production environment and run the full-stack server
+ENV NODE_ENV=production
 USER bun
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "server.ts" ]
