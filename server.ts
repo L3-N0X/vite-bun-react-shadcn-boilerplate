@@ -1,7 +1,8 @@
-import { serve } from "bun";
+import { serve, file } from "bun";
+import { join } from "path";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 const server = serve({
   port,
@@ -93,8 +94,33 @@ const server = serve({
       );
     }
 
-    // Production static file serving would go here
-    return new Response("Not found", { status: 404 });
+    // Production static file serving
+    try {
+      // Handle root path - serve index.html
+      if (pathname === "/") {
+        const indexFile = file(join(process.cwd(), "dist", "index.html"));
+        if (await indexFile.exists()) {
+          return new Response(indexFile);
+        }
+      }
+
+      // Try to serve static file from dist directory
+      const staticFile = file(join(process.cwd(), "dist", pathname));
+      if (await staticFile.exists()) {
+        return new Response(staticFile);
+      }
+
+      // For SPA routing - serve index.html for non-API routes
+      const indexFile = file(join(process.cwd(), "dist", "index.html"));
+      if (await indexFile.exists()) {
+        return new Response(indexFile);
+      }
+
+      return new Response("Not found", { status: 404 });
+    } catch (error) {
+      console.error("Static file serving error:", error);
+      return new Response("Internal Server Error", { status: 500 });
+    }
   },
 
   // Error handler
@@ -113,4 +139,7 @@ console.log(`   - GET /api/version`);
 if (isDevelopment) {
   console.log(`📝 Note: Frontend is served by Vite dev server on http://localhost:5173`);
   console.log(`🔄 Hot reload enabled for server-side code`);
+} else {
+  console.log(`📁 Serving static files from ./dist directory`);
+  console.log(`🌐 Full-stack server ready - API + Frontend`);
 }

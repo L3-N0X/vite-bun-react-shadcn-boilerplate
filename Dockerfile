@@ -18,15 +18,15 @@ COPY . .
 
 # build the Vite project
 ENV NODE_ENV=production
-RUN bun test
 RUN bun run build
 
 # copy built static files and server into final image
 FROM base AS release
 COPY --from=prerelease /usr/src/app/dist ./dist
 COPY --from=prerelease /usr/src/app/server.ts .
+COPY --from=prerelease /usr/src/app/node_modules ./node_modules
 
-# run the static file server
+# run the full-stack server
 USER bun
 EXPOSE 3000/tcp
 ENTRYPOINT [ "bun", "run", "server.ts" ]

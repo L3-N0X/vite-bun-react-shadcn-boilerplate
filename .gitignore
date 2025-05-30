@@ -26,3 +26,5 @@ dist-ssr
 WEB-CONTENT.md
 PLAN.md
 .clinerules
+run-prod.bat
+test-prod.bat

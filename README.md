@@ -31,7 +31,7 @@ A modern, full-stack boilerplate that combines the speed of Vite and Bun with th
 
 ```raw
 ├── src/
-│   ├── components/          # Reusable UI components
+│   ├── components/         # Reusable UI components
 │   │   ├── ui/             # Shadcn/UI components
 │   │   ├── layout.tsx      # Main layout component
 │   │   ├── navbar.tsx      # Navigation bar
