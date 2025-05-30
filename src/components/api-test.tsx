@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "./ui/card";
 
 interface ApiResponse {
   status?: string;
@@ -44,32 +45,43 @@ export function ApiTest() {
   };
 
   return (
-    <div className="space-y-6 p-6 bg-card rounded-lg border">
-      <h2 className="text-2xl font-bold">API Endpoint Test</h2>
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle>API Endpoint Test</CardTitle>
+        <CardDescription>
+          Test the available API endpoints to check server connectivity
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <div>
+            <Button onClick={testHealthEndpoint} disabled={loading.health} className="mr-4">
+              {loading.health ? "Testing..." : "Test /api/health"}
+            </Button>
+            {healthResponse && (
+              <div className="mt-2 p-3 bg-muted rounded text-sm">
+                <pre>{JSON.stringify(healthResponse, null, 2)}</pre>
+              </div>
+            )}
+          </div>
 
-      <div className="space-y-4">
-        <div>
-          <Button onClick={testHealthEndpoint} disabled={loading.health} className="mr-4">
-            {loading.health ? "Testing..." : "Test /api/health"}
-          </Button>
-          {healthResponse && (
-            <div className="mt-2 p-3 bg-muted rounded text-sm">
-              <pre>{JSON.stringify(healthResponse, null, 2)}</pre>
-            </div>
-          )}
+          <div>
+            <Button onClick={testVersionEndpoint} disabled={loading.version} className="mr-4">
+              {loading.version ? "Testing..." : "Test /api/version"}
+            </Button>
+            {versionResponse && (
+              <div className="mt-2 p-3 bg-muted rounded text-sm">
+                <pre>{JSON.stringify(versionResponse, null, 2)}</pre>
+              </div>
+            )}
+          </div>
         </div>
-
-        <div>
-          <Button onClick={testVersionEndpoint} disabled={loading.version} className="mr-4">
-            {loading.version ? "Testing..." : "Test /api/version"}
-          </Button>
-          {versionResponse && (
-            <div className="mt-2 p-3 bg-muted rounded text-sm">
-              <pre>{JSON.stringify(versionResponse, null, 2)}</pre>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter>
+        <p className="text-sm text-muted-foreground">
+          Click the buttons above to test API endpoints
+        </p>
+      </CardFooter>
+    </Card>
   );
 }

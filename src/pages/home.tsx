@@ -1,36 +1,17 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { ApiTest } from "@/components/api-test";
+import { Counter } from "@/components/counter";
 
 export function HomePage() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
-      <h1 className="text-4xl font-bold">Simple Counter Demo</h1>
+      <h1 className="text-4xl font-bold mb-8">Simple Counter Demo</h1>
 
-      <div className="flex flex-col items-center space-y-4">
-        <div className="text-6xl font-mono font-bold">{count}</div>
+      <div className="flex flex-col lg:flex-row gap-6 w-full max-w-6xl">
+        <Counter />
 
-        <Button onClick={() => setCount((count) => count + 1)} size="lg" className="min-w-32">
-          Increment
-        </Button>
-
-        <Button
-          onClick={() => {
-            setCount(0);
-            toast.success("Counter reset!");
-          }}
-          variant="outline"
-          size="sm"
-        >
-          Reset
-        </Button>
-      </div>
-
-      <div className="w-full max-w-2xl">
-        <ApiTest />
+        <div className="flex-1 w-full lg:max-w-lg">
+          <ApiTest />
+        </div>
       </div>
     </>
   );
